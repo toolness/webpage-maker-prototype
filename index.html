@@ -3,7 +3,35 @@
 <title>Hello there.</title>
 <link rel="stylesheet" href="codemirror2/lib/codemirror.css">
 <link rel="stylesheet" href="jsbin-codemirror-theme.css">
-<p>Hey.</p>
+<style>
+.templates li {
+  cursor: pointer;
+}
+
+.templates li:hover {
+  background: #f0f0f0;
+}
+
+.templates li img {
+  width: 200px;
+}
+</style>
+<ul class="templates">
+  <li id="simple-1-column">
+    <h2>Simple 1 Column</h2>
+    <img src="http://hackbook.hackasaurus.org/library/asset/template-1.png">
+  </li>
+  <li id="powder-2-column">
+    <h2>Powder 2 Column</h2>
+    <img src="http://hackbook.hackasaurus.org/library/asset/template-2.png">
+  </li>
+  <li id="beige-3-column">
+    <h2>Beige 3 Column</h2>
+    <img src="http://hackbook.hackasaurus.org/library/asset/template-3.png">
+  </li>
+</ul>
+<div id="source"></div>
+<iframe id="preview"></iframe>
 <script src="jquery.min.js"></script>
 <script src="codemirror2/lib/codemirror.js"></script>
 <script src="codemirror2/mode/xml/xml.js"></script>
@@ -12,12 +40,38 @@
 <script src="codemirror2/mode/htmlmixed/htmlmixed.js"></script>
 <script>
 $(window).ready(function() {
-  var codeMirror = CodeMirror(function(element) {
-    $(document.body).append(element);
+  var DELAY_MS = 300;
+  var delay;
+  var editor = CodeMirror(function(element) {
+    $("#source").append(element);
   }, {
-    value: $(document.body).html(),
+    value: '<p>hi</p>',
     mode: "text/html",
-    theme: "jsbin"
+    theme: "jsbin",
+    tabMode: "indent",
+    onChange: schedulePreviewRefresh
+  });
+
+  function schedulePreviewRefresh() {
+    clearTimeout(delay);
+    delay = setTimeout(updatePreview, DELAY_MS);
+  }
+
+  function updatePreview() {
+    var previewDocument = $("#preview").contents()[0];
+    previewDocument.open();
+    previewDocument.write(editor.getValue());
+    previewDocument.close();
+  }
+
+  schedulePreviewRefresh();
+  
+  $(".templates li").click(function() {
+    var id = $(this).attr("id");
+    jQuery.get('templates/' + id + '.html', function(data) {
+      editor.setValue(data);
+      schedulePreviewRefresh();
+    }, 'text');
   });
 });
 </script>
