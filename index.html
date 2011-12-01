@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Hello there.</title>
+<link rel="stylesheet" href="codemirror2/lib/codemirror.css">
+<link rel="stylesheet" href="jsbin-codemirror-theme.css">
+<p>Hey.</p>
+<script src="jquery.min.js"></script>
+<script src="codemirror2/lib/codemirror.js"></script>
+<script src="codemirror2/mode/xml/xml.js"></script>
+<script src="codemirror2/mode/javascript/javascript.js"></script>
+<script src="codemirror2/mode/css/css.js"></script>
+<script src="codemirror2/mode/htmlmixed/htmlmixed.js"></script>
+<script>
+$(window).ready(function() {
+  var codeMirror = CodeMirror(function(element) {
+    $(document.body).append(element);
+  }, {
+    value: $(document.body).html(),
+    mode: "text/html",
+    theme: "jsbin"
+  });
+});
+</script>
