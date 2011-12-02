@@ -20,7 +20,7 @@ html, body {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Georgia, serif;
   color: #41415b;
   margin: 0px;
   padding: 0px;
@@ -46,15 +46,30 @@ h1 {
   margin-top: 0px;
 }
 
-ul.templates {
-  padding-left: 0px;
-  border-bottom: 1px solid black;
-  margin-bottom: 0px;
-  margin-top: 0px;
+header {
   height: 95px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+header aside.intro-only {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 10px;
+  padding-left: 10px;
+  color: gray;
+}
+
+header aside.intro-only:before {
+  content: '← ';
+}
+
+ul.templates {
+  padding-left: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  display: inline-block;
 }
 
 ul.templates li {
@@ -97,6 +112,7 @@ div#source, div#preview-holder {
   position: absolute;
   bottom: 0px;
   top: 95px;
+  border-top: 1px solid black;
 }
 
 div#preview-holder {
@@ -115,24 +131,33 @@ iframe#preview {
   height: 100%;
   background: rgba(255, 255, 255, 0.25);
 }
+
+#panes {
+  display: none;
+}
 </style>
-<h1>Web Page Maker</h1>
-<ul class="templates">
-  <li id="simple-1-column">
-    <h2>Simple 1 Column</h2>
-    <img src="http://hackbook.hackasaurus.org/library/asset/template-1.png">
-  </li>
-  <li id="powder-2-column">
-    <h2>Powder 2 Column</h2>
-    <img src="http://hackbook.hackasaurus.org/library/asset/template-2.png">
-  </li>
-  <li id="beige-3-column">
-    <h2>Beige 3 Column</h2>
-    <img src="http://hackbook.hackasaurus.org/library/asset/template-3.png">
-  </li>
-</ul>
-<div id="source"></div>
-<div id="preview-holder"><iframe id="preview"></iframe></div>
+<header>
+  <h1>Web Page Maker</h1>
+  <ul class="templates">
+    <li id="simple-1-column">
+      <h2>Simple 1 Column</h2>
+      <img src="http://hackbook.hackasaurus.org/library/asset/template-1.png">
+    </li>
+    <li id="powder-2-column">
+      <h2>Powder 2 Column</h2>
+      <img src="http://hackbook.hackasaurus.org/library/asset/template-2.png">
+    </li>
+    <li id="beige-3-column">
+      <h2>Beige 3 Column</h2>
+      <img src="http://hackbook.hackasaurus.org/library/asset/template-3.png">
+    </li>
+  </ul>
+  <aside class="intro-only">Pick a template to get started!</aside>
+</header>
+<div id="panes">
+  <div id="source"></div>
+  <div id="preview-holder"><iframe id="preview"></iframe></div>
+</div>
 <script src="jquery.min.js"></script>
 <script src="codemirror2/lib/codemirror.js"></script>
 <script src="codemirror2/mode/xml/xml.js"></script>
@@ -168,13 +193,15 @@ $(window).ready(function() {
   schedulePreviewRefresh();
   
   $(".templates li").click(function() {
+    $(".intro-only").fadeOut();
     var id = $(this).attr("id");
     jQuery.get('templates/' + id + '.html', function(data) {
+      $("#panes").show();
       editor.setValue(data);
       schedulePreviewRefresh();
     }, 'text');
   });
   
-  $(".templates li#simple-1-column").click();
+  //$(".templates li#simple-1-column").click();
 });
 </script>
