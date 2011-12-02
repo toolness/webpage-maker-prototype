@@ -187,7 +187,9 @@ iframe#preview {
 </header>
 <div id="panes">
   <div id="source"></div>
-  <div id="preview-holder"><iframe id="preview"></iframe></div>
+  <div id="preview-holder">
+    <iframe id="preview" src="blank.html"></iframe>
+  </div>
 </div>
 <script src="jquery.min.js"></script>
 <script src="codemirror2/lib/codemirror.js"></script>
@@ -215,10 +217,22 @@ $(window).ready(function() {
   }
 
   function updatePreview() {
-    var previewDocument = $("#preview").contents()[0];
-    previewDocument.open();
-    previewDocument.write(editor.getValue());
-    previewDocument.close();
+    function update() {
+      var previewDocument = $("#preview").contents()[0];
+      previewDocument.open();
+      previewDocument.write(editor.getValue());
+      previewDocument.close();
+    }
+    
+    try {
+      update();
+    } catch (e) {
+      // The user probably clicked on a link in the page and is
+      // somewhere else now, so let's reload our blank page.
+      var iframeWindow = $("#preview")[0].contentWindow;
+      iframeWindow.location = "blank.html";
+      $("#preview").one("load", update);
+    }
   }
 
   schedulePreviewRefresh();
