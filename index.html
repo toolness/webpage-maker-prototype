@@ -163,6 +163,79 @@ iframe#preview {
   height: 100%;
   background: rgba(255, 255, 255, 0.25);
 }
+
+div.overlay-outer {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+div.overlay-middle {
+  height: 40%;
+  width: 100%;
+  position: absolute;
+  top: 30%;
+}
+
+div.overlay-inner {
+  position: relative;
+  width: 75%;
+  margin: 0 auto;
+  color: black;
+  background: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+div.overlay-inner div.done {
+  opacity: 0;
+  -moz-transition: opacity 1s;
+  -webkit-transition: opacity 1s;
+  -o-transition: opacity 1s;
+  -ms-transition: opacity 1s;
+}
+
+div.overlay-inner div.done.visible {
+  opacity: 1;
+}
+
+img.throbber {
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+img.close {
+  position: absolute;
+  top: -23px;
+  right: -21px;
+  cursor: pointer;
+}
+
+.published-url {
+  padding: 10px;
+}
+
+.published-url a {
+  font-size: 24pt;
+  text-decoration: none;
+  color: steelblue;
+  padding: 10px;
+}
+
+.published-url a:hover {
+  background-color: #f0f0f0;
+}
 </style>
 <header>
   <h1>Webpage Maker</h1>
@@ -191,16 +264,38 @@ iframe#preview {
     <iframe id="preview" src="blank.html"></iframe>
   </div>
 </div>
+<div class="overlay-outer">
+  <div class="overlay-middle">
+    <div class="overlay-inner">
+      <img src="close-button.png" class="close">
+      <img src="ajax-loader.gif" class="throbber">
+      <div class="done">
+        <p>Here is the URL for your webpage that anyone can view.</p>
+        <div class="published-url">
+          <a target="_blank" href="http://foo/bar">http://foo/bar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="jquery.min.js"></script>
+<script src="publish.js"></script>
 <script src="codemirror2/lib/codemirror.js"></script>
 <script src="codemirror2/mode/xml/xml.js"></script>
 <script src="codemirror2/mode/javascript/javascript.js"></script>
 <script src="codemirror2/mode/css/css.js"></script>
 <script src="codemirror2/mode/htmlmixed/htmlmixed.js"></script>
 <script>
+function absolutifyURL(relativeURL) {
+  var a = $('<a></a>');
+  a.attr("href", relativeURL);
+  return a[0].href;
+}
+
 $(window).ready(function() {
   var DELAY_MS = 300;
   var delay;
+  var templateURL;
   var editor = CodeMirror(function(element) {
     $("#source").append(element);
   }, {
@@ -240,15 +335,40 @@ $(window).ready(function() {
   $(".templates li").click(function() {
     $(".intro-only").fadeOut();
     var id = $(this).attr("id");
-    jQuery.get('templates/' + id + '.html', function(data) {
+    templateURL = absolutifyURL('templates/' + id + '.html');
+    jQuery.get(templateURL, function(data) {
       $("#panes, #actions").show();
       editor.setValue(data);
       schedulePreviewRefresh();
     }, 'text');
   });
+
+  $("div.overlay-outer .close").click(function() {
+    $("div.overlay-outer").fadeOut(function() {
+      $("div.overlay-outer .done").removeClass("visible");
+    });
+  });
   
   $("#actions input").click(function() {
-    alert("This feature is not yet implemented. Sorry!");
+    var hackpubURL = "http://hackpub.hackasaurus.org/";
+    var html = editor.getValue();
+    if (html.length) {
+      $("div.overlay-outer").fadeIn();
+      $("div.overlay-outer .throbber").fadeIn();
+      var timeout = DeferredTimeout(1000);
+      var publish = DeferredPublish(html, templateURL, hackpubURL);
+      jQuery.when(publish, timeout).then(function onSuccess(publishArgs) {
+        var data = publishArgs[0];
+        var url = data['published-url'];
+        $("div.overlay-outer .throbber").fadeOut(function() {
+          $(".published-url a").attr("href", url).text(url);
+          $("div.overlay-outer .done").addClass("visible");
+        });
+      },
+      function onFailure() {
+        $("div.overlay-outer .close").click();
+      });
+    }
   });
 });
 </script>
