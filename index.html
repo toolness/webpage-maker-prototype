@@ -13,6 +13,15 @@ body {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+
+  background-image: url(http://hackasaurus.org/images/gradient-ffef8d-to-ffffff-400px.png);
+  background-repeat: repeat-x;
+  background-color: white;
+
+  background-image: -webkit-gradient(linear, left top, left 400px, from(#ffef8d), to(white));
+  background-image: -webkit-linear-gradient(top, #ffef8d, white 400px);
+  background-image: -moz-linear-gradient(top, #ffef8d, white 400px);  
+  background-image: -o-linear-gradient(top, #ffef8d, white 400px);  
 }
 
 ul.templates {
@@ -21,10 +30,6 @@ ul.templates {
   margin-bottom: 0px;
   margin-top: 0px;
   height: 95px;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffef8d), to(white));
-  background-image: -webkit-linear-gradient(top, #ffef8d, white);
-  background-image: -moz-linear-gradient(top, #ffef8d, white);  
-  background-image: -o-linear-gradient(top, #ffef8d, white);
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -75,6 +80,7 @@ div#source, div#preview-holder {
 div#preview-holder {
   right: 0px;
   border-left: 1px solid black;
+  background: white;
 }
 
 iframe#preview {
@@ -85,6 +91,7 @@ iframe#preview {
 
 .CodeMirror, .CodeMirror-scroll {
   height: 100%;
+  background: rgba(255, 255, 255, 0.25);
 }
 </style>
 <ul class="templates">
