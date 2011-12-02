@@ -42,8 +42,6 @@ $(window).ready(function() {
     }
   }
 
-  schedulePreviewRefresh();
-  
   $(".templates li").click(function() {
     $(".intro-only").fadeOut();
     var id = $(this).attr("id");
@@ -51,7 +49,7 @@ $(window).ready(function() {
     jQuery.get(templateURL, function(data) {
       $("#panes, #actions").show();
       editor.setValue(data);
-      schedulePreviewRefresh();
+      updatePreview();
     }, 'text');
   });
 
