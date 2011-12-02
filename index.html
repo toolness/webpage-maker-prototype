@@ -45,7 +45,6 @@ $(window).ready(function() {
   var editor = CodeMirror(function(element) {
     $("#source").append(element);
   }, {
-    value: '<p>hi</p>',
     mode: "text/html",
     theme: "jsbin",
     tabMode: "indent",
@@ -73,5 +72,7 @@ $(window).ready(function() {
       schedulePreviewRefresh();
     }, 'text');
   });
+  
+  $(".templates li#simple-1-column").click();
 });
 </script>
