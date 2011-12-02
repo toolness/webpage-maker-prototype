@@ -21,6 +21,7 @@ html, body {
 
 body {
   font-family: Georgia, serif;
+  font-size: 14px;
   color: #41415b;
   margin: 0px;
   padding: 0px;
@@ -36,7 +37,15 @@ body {
   background-image: -o-linear-gradient(top, #ffef8d, white 400px);  
 }
 
-h1 {
+header {
+  position: relative;
+  height: 95px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+header h1 {
   font-family: TrashHandRegular;
   font-weight: normal;
   font-size: 40px;
@@ -44,13 +53,6 @@ h1 {
   padding-right: 10px;
   padding-top: 10px;
   margin-top: 0px;
-}
-
-header {
-  height: 95px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
 header aside.intro-only {
@@ -104,6 +106,36 @@ ul.templates li h2 {
   display: none;
 }
 
+#actions {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: none;
+}
+
+#actions input {
+  font-family: inherit;
+  font-size: inherit;
+  color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #f8a339;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-style: italic;
+}
+
+#actions input:hover {
+  background-color: #ffc833;
+}
+
+#panes {
+  display: none;
+}
+
 div#source, div#preview-holder {
   width: 50%;
   -moz-box-sizing: border-box;
@@ -131,10 +163,6 @@ iframe#preview {
   height: 100%;
   background: rgba(255, 255, 255, 0.25);
 }
-
-#panes {
-  display: none;
-}
 </style>
 <header>
   <h1>Webpage Maker</h1>
@@ -153,6 +181,9 @@ iframe#preview {
     </li>
   </ul>
   <aside class="intro-only">Pick a template to get started!</aside>
+  <div id="actions">
+    <input type="button" value="Publish To Internet ▶">
+  </div>
 </header>
 <div id="panes">
   <div id="source"></div>
@@ -196,12 +227,14 @@ $(window).ready(function() {
     $(".intro-only").fadeOut();
     var id = $(this).attr("id");
     jQuery.get('templates/' + id + '.html', function(data) {
-      $("#panes").show();
+      $("#panes, #actions").show();
       editor.setValue(data);
       schedulePreviewRefresh();
     }, 'text');
   });
   
-  //$(".templates li#simple-1-column").click();
+  $("#actions input").click(function() {
+    alert("This feature is not yet implemented. Sorry!");
+  });
 });
 </script>
