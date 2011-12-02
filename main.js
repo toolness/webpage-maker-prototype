@@ -43,14 +43,27 @@ $(window).ready(function() {
   }
 
   $(".templates li").click(function() {
-    $(".intro-only").fadeOut();
     var id = $(this).attr("id");
+
     templateURL = absolutifyURL('templates/' + id + '.html');
-    jQuery.get(templateURL, function(data) {
+
+    var req = jQuery.get(templateURL, undefined, 'text');
+
+    function showTemplate(data) {
+      if (typeof(data) == "object")
+        data = data[0];
       $("#panes, #actions").show();
       editor.setValue(data);
       updatePreview();
-    }, 'text');
+    }
+
+    if ($(".intro-only").length) {
+      var transitionDelay = DeferredTimeout(500);
+      $(".intro-only").removeClass("intro-only");
+      jQuery.when(req, transitionDelay).done(showTemplate);
+    } else {
+      jQuery.when(req).done(showTemplate);
+    }
   });
 
   $("div.overlay-outer .close").click(function() {

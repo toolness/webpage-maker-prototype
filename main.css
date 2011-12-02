@@ -49,16 +49,18 @@ header h1 {
   margin-top: 0px;
 }
 
-header aside.intro-only {
-  display: inline-block;
-  vertical-align: top;
-  padding-top: 10px;
-  padding-left: 10px;
-  color: gray;
+header aside {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 20px;
+  opacity: 0;
+  -moz-transition: opacity 1s;
+  -webkit-transition: opacity 1s;
 }
 
-header aside.intro-only:before {
-  content: '← ';
+header aside.intro-only {
+  opacity: 1.0;
 }
 
 ul.templates {
@@ -66,6 +68,21 @@ ul.templates {
   margin-bottom: 0px;
   margin-top: 0px;
   display: inline-block;
+  -moz-transform-origin: 0% 0%;
+  -webkit-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  -moz-transition: -moz-transform 0.5s;
+  -webkit-transition: -webkit-transform 0.5s;
+  -o-transition: -o-transform 0.5s;
+  -ms-transition: -ms-transform 0.5s;
+}
+
+ul.templates.intro-only {
+  -moz-transform: scale(3.0) translate(30px, 40px);
+  -webkit-transform: scale(3.0) translate(30px, 40px);
+  -o-transform: scale(3.0) translate(30px, 40px);
+  -ms-transform: scale(3.0) translate(30px, 40px);
 }
 
 ul.templates li {
