@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>Hack A Template!</title>
+<title>Web Page Maker</title>
 <link rel="stylesheet" href="codemirror2/lib/codemirror.css">
 <link rel="stylesheet" href="jsbin-codemirror-theme.css">
 <style>
+@font-face {
+    font-family: 'TrashHandRegular';
+    src: url('fonts/TrashHand-webfont.eot');
+    src: url('fonts/TrashHand-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/TrashHand-webfont.woff') format('woff'),
+         url('fonts/TrashHand-webfont.ttf') format('truetype'),
+         url('fonts/TrashHand-webfont.svg#TrashHandRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
   height: 100%;
 }
@@ -22,6 +33,16 @@ body {
   background-image: -webkit-linear-gradient(top, #ffef8d, white 400px);
   background-image: -moz-linear-gradient(top, #ffef8d, white 400px);  
   background-image: -o-linear-gradient(top, #ffef8d, white 400px);  
+}
+
+h1 {
+  font-family: TrashHandRegular;
+  font-weight: normal;
+  font-size: 40px;
+  float: right;
+  padding-right: 10px;
+  padding-top: 10px;
+  margin-top: 0px;
 }
 
 ul.templates {
@@ -94,6 +115,7 @@ iframe#preview {
   background: rgba(255, 255, 255, 0.25);
 }
 </style>
+<h1>Web Page Maker</h1>
 <ul class="templates">
   <li id="simple-1-column">
     <h2>Simple 1 Column</h2>
